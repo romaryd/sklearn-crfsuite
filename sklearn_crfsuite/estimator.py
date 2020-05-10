@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 
 from six.moves import zip
-from tqdm import tqdm
 import pycrfsuite
 
 from sklearn_crfsuite._fileresource import FileResource
@@ -307,9 +306,6 @@ class CRF(BaseEstimator):
         trainer = self._get_trainer()
         train_data = zip(X, y)
 
-        if self.verbose:
-            train_data = tqdm(train_data, "loading training data to CRFsuite", len(X), leave=True)
-
         for xseq, yseq in train_data:
             trainer.append(xseq, yseq)
 
@@ -318,9 +314,6 @@ class CRF(BaseEstimator):
 
         if X_dev is not None:
             test_data = zip(X_dev, y_dev)
-
-            if self.verbose:
-                test_data = tqdm(test_data, "loading dev data to CRFsuite", len(X_dev), leave=True)
 
             for xseq, yseq in test_data:
                 trainer.append(xseq, yseq, 1)
